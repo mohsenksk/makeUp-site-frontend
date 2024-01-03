@@ -1,0 +1,15 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.hoverLi{
+     display:flex ;
+}
+.other-element{
+    display: none;
+}
+
+.hover-element:hover  {
+    background-color: azure;
+  }
