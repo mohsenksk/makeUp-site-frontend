@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../loginStyle.css";
 import { Input, InputGroup, Tooltip, Whisper } from "rsuite";
-import EyeIcon from "@rsuite/icons/legacy/Eye";
-import EyeSlashIcon from "@rsuite/icons/legacy/EyeSlash";
+import SignUp from '../api/signup.api'
+
 
 export default function SignInSignUp() {
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function SignInSignUp() {
 
   /*form validation*/
 
-  const handleSubmit = (e) => {
+  const handleSubmit=async (e) => {
     e.preventDefault();
 
     const validationErrors = {};
@@ -57,7 +57,24 @@ export default function SignInSignUp() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      // Submit the form
+      const userInfo={
+        userName:name,email,password,confirmPassword
+      }
+      SignUp(userInfo).then(async(response)=>{
+        console.log(response)
+        if (response.message===
+          "User created successfully") {
+          alert("کاربر با موفقیت ثبت نام گردید")
+          return;
+        }else{
+          alert("error")
+        }
+
+      }).catch((error)=>{
+        if (error.response.data.errorEmail) {
+          alert("کاربر با ایمیل مشابه یافت شد")
+        }else{console.log(error)}
+      })
     }
   };
 
@@ -84,7 +101,6 @@ export default function SignInSignUp() {
           </button>
         </div>
 
-
         <div className="sub-cont">
           <div className="img">
             <div className="img__text m--up">
@@ -101,7 +117,6 @@ export default function SignInSignUp() {
             </div>
           </div>
 
-          
           <form className="form sign-up" onSubmit={handleSubmit}>
             <h2>وقت خرید مطمعنه</h2>
             <label>
@@ -113,7 +128,7 @@ export default function SignInSignUp() {
                 <Input
                   placeholder=""
                   type="text"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setName(e)}
                 />
               </Whisper>
               {errors.name && <p>{errors.name}</p>}
@@ -123,7 +138,7 @@ export default function SignInSignUp() {
               <Input
                 placeholder=""
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e)}
               />
               {errors.email && <p>{errors.email}</p>}
             </label>
@@ -132,15 +147,20 @@ export default function SignInSignUp() {
               <Input
                 placeholder=""
                 type="password"
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e)}
               />
               {errors.password && <p>{errors.password}</p>}
             </label>
             <label>
               <span>تکرار رمز عبور</span>
               <InputGroup inside>
-                <Input type="password" size="md" />
+                <Input
+                  type="password"
+                  size="md"
+                  onChange={(e) => setConfirmPassword(e)}
+                />
               </InputGroup>
+              {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
             </label>
             <button type="submit" className="submit">
               ثبت نام
