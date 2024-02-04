@@ -22,3 +22,15 @@ export interface publlicData{
     publicData:any,
     params :any[]
 }
+export type product= Partial<{
+    params:Object,
+    name:String|null|undefined,
+    description:String|null,
+    image:any|null,
+    price:Number|null,
+    brandId:Number|undefined,
+    token:any,
+    id:Number,
+    newArray:object
+}>
+

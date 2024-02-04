@@ -2,16 +2,15 @@ import { call, put } from "@redux-saga/core/effects";
 import getProductApi from "../../../api/getProduct.api";
 import { getProductResponse } from "../../action/Product.action";
 
-export function* getProduct() {
+export function* getProduct(): any  {
   const product = yield call(getProductApi);
-  console.log(product)
-  const obj = {};
-  product.forEach((element, index) => {
+  const obj: { [key: number]: { title: string, description: string, image: string } } = {};
+  product.data.forEach((element: any, index: any) => {
     obj[index] = {
-      title: element.title,
+      title: element.name,
       description: element.description,
       image: element.image
     };
   });
-  yield put(getProductResponse(product));
+  yield put(getProductResponse(product.data));
 }

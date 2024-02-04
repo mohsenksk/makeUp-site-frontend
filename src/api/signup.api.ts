@@ -6,7 +6,7 @@ import  {Server_API}  from "../configs/index.ts";
 
 const SignUp = async (param:LoginTypes) => {
   console.log(param)
-  const response = await axios.post(`${Server_API}/`, {
+  const response = await axios.post(`${Server_API}/auth/sign-up`, {
     /*name:param.name,
     email:param.email,
     //phoneNumber: param.phoneNumber,

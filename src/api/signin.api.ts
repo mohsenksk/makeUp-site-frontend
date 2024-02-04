@@ -5,11 +5,13 @@ import  {Server_API}  from "../configs/index.ts";
 
 
 const SignIn = async (param:LoginTypes) => {
-  const response = await axios.get(`${Server_API}/routes/auth/signin`, {
+  console.log(param)
+  const response = await axios.post(`${Server_API}/auth/sign-in`, {
     headers: {
       "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "http://localhost:5174/",
     },
+    mode: 'cors',
+    body:JSON.stringify(param)
   });
 
   return response.data;

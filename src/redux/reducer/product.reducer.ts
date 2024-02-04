@@ -1,20 +1,16 @@
 import { GET_PRODUCT_DATA_RESPONSE } from "../constant/types";
-import { ProductState, actionType } from "../../types";
 
-
-const initialState: ProductState = {
+const initialState = {
   product: {},
-  params:[]
 };
 
-export default (state: ProductState = initialState, action: any) => {
-  const { payload, type } = action;
+export default (state = initialState, action = {}) => {
+  const { payload, type }:any = action;
   switch (type) {
     case GET_PRODUCT_DATA_RESPONSE:
-      const getProductDataPayload = payload as ProductState;
       return {
         ...state,
-        product: [...getProductDataPayload.params],
+        product: [ ...payload.params ],
       };
 
     default:

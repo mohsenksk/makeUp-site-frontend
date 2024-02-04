@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import "../loginStyle.css";
 import { Input, InputGroup, Tooltip, Whisper } from "rsuite";
-import SignUp from '../api/signup.api'
-
+import SignUp from "../api/signup.api";
+import SignIn from "../api/signin.api";
 
 export default function SignInSignUp() {
   useEffect(() => {
@@ -11,9 +11,9 @@ export default function SignInSignUp() {
     });
   }, []);
 
-  const handleChange = () => {
-    setVisible(!visible);
-  };
+  //  const handleChange = () => {
+  //  setVisible(!visible);
+  // };
 
   /*states*/
   const [name, setName] = useState("");
@@ -25,7 +25,7 @@ export default function SignInSignUp() {
 
   /*form validation*/
 
-  const handleSubmit=async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const validationErrors = {};
@@ -57,26 +57,48 @@ export default function SignInSignUp() {
     setErrors(validationErrors);
 
     if (Object.keys(validationErrors).length === 0) {
-      const userInfo={
-        userName:name,email,password,confirmPassword
-      }
-      SignUp(userInfo).then(async(response)=>{
-        console.log(response)
-        if (response.message===
-          "User created successfully") {
-          alert("کاربر با موفقیت ثبت نام گردید")
-          return;
-        }else{
-          alert("error")
-        }
-
-      }).catch((error)=>{
-        if (error.response.data.errorEmail) {
-          alert("کاربر با ایمیل مشابه یافت شد")
-        }else{console.log(error)}
-      })
+      const userInfo = {
+        userName: name,
+        email,
+        password,
+        confirmPassword,
+      };
+      SignUp(userInfo)
+        .then(async (response) => {
+          console.log(response);
+          if (response.message === "User created successfully") {
+            alert("کاربر با موفقیت ثبت نام گردید");
+            return;
+          } else {
+            alert("error");
+          }
+        })
+        .catch((error) => {
+          if (error.response.data.errorEmail) {
+            alert("کاربر با ایمیل مشابه یافت شد");
+          } else {
+            console.log(error);
+          }
+        });
     }
   };
+
+  const handleSignIn=()=>{
+    const isUser = { email: name, password: password };
+    SignIn(isUser)
+      .then(async (response) => {
+        alert(`${isUser.email} kos khol `)
+        console.log(response)
+      })
+      .catch((error) => {
+          console.log(error); 
+          if (error.response.status===400) {
+            alert("نام کاربری یا رمز عبور اشتباه است")
+          }
+           console.log(error)   
+      });
+      window.location.reload()
+  }
 
   return (
     <>
@@ -85,18 +107,45 @@ export default function SignInSignUp() {
           <h2>خوش امدید</h2>
           <label>
             <span>نام کاربری </span>
-            <Input placeholder="" type="email" />
+            <Input
+              placeholder="name"
+              type="text"
+              onChange={(e) => setName(e)}
+            />
           </label>
           <label>
             <span>رمز عبور</span>
             <InputGroup inside>
-              <Input type="password" size="md" />
+              <Input
+                type="password"
+                size="md"
+                onChange={(e) => setPassword(e)}
+              />
             </InputGroup>
           </label>
           <div className="ml-64 mt-4">
             <a className="forgot-pass ">فراموشی رمز عبور?</a>
           </div>
-          <button type="button" className="submit">
+          <button
+            type="submit"
+            className="submit"
+            onClick={() => {    const isUser = { email: name, password: password };
+            SignIn(isUser)
+              .then(async (response) => {
+                alert(`${isUser.email} kos khol `)
+                console.log(response)
+                window.location.href="/"
+              })
+              .catch(async(error) => {
+                  
+                  if (error.response.status===400) {
+                    alert("نام کاربری یا رمز عبور اشتباه است")
+                    window.location.reload();
+                  }
+                    console.log(error)   
+              });
+              }}
+          >
             ورود
           </button>
         </div>
